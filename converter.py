@@ -120,9 +120,20 @@ def process_jefit_unfiltered_file(jefit_filename, output_header, output_filename
         for line in iterate_jefit_csv(jefit_reader, jefit_reader_headers):
             writer.writerow(line)
 
+def append_to_file(strong_filename, output_header, output_filename):
+    with open(strong_filename, mode='r') as input_csv:
+        with open(output_filename, mode='a', newline='') as output_csv:
+            reader = csv.DictReader(input_csv, delimiter=';')
+            writer = csv.DictWriter(output_csv, fieldnames=output_header, delimiter=';')
+            for line in reader:
+                writer.writerow(line)
+
 jefit_filename = 'jefitInput.csv'
+strong_filename = 'strongInput.csv'
 output_filename = 'output.csv'
 
 output_header = ['Date', 'Workout Name', 'Exercise Name', 'Set Order', 'Weight', 'Weight Unit', 'Reps', 'RPE', 'Distance', 'Distance Unit', 'Seconds', 'Notes', 'Workout Notes', 'Workout Duration']
 
 process_jefit_unfiltered_file(jefit_filename, output_header, output_filename)
+
+append_to_file(strong_filename, output_header, output_filename)
